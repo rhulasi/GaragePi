@@ -14,6 +14,7 @@
         <div class="panel-heading">Pi Status</div>
         <h5>CPU: <span id="cpuTemp">?</span>° C</h5>
         <h5>GPU: <span id="gpuTemp">?</span>° C</h5>
+        <h5>Uptime: <span id="uptime">?</span></h5>
       </div>
     </div>
 
@@ -76,6 +77,7 @@
                                         .addClass(data.is_open ? "invisible": "visible");
                 $("#cpuTemp").html(data.cpu_temp_c.toFixed(2));
                 $("#gpuTemp").html(data.gpu_temp_c.toFixed(2));
+                $("#uptime").html(data.uptime);
               })
               .fail(function() {
                   $("#status").text("UNKNOWN")

@@ -13,6 +13,14 @@ from common.struct import Struct
 OPEN = "OPEN"
 CLOSED = "CLOSED"
 
+intervals = (
+    ('weeks', 604800),  # 60 * 60 * 24 * 7
+    ('days', 86400),    # 60 * 60 * 24
+    ('hours', 3600),    # 60 * 60
+    ('minutes', 60),
+    ('seconds', 1),
+)
+
 class GaragePiController:
     def __init__(self, port="5550"):
         self.__bind_addr = "tcp://*:%s" % port
@@ -140,6 +148,7 @@ class GaragePiController:
         data.cpu_temp_f = data.cpu_temp_c * 9.0 / 5.0 + 32
         data.gpu_temp_c = self.get_gpu_temperature()
         data.gpu_temp_f = data.gpu_temp_c * 9.0 / 5.0 + 32
+        data.uptime = self.get_uptime()
         return data
 
     def get_cpu_temperature(self) -> float:
@@ -177,3 +186,17 @@ class GaragePiController:
         while 1:
             schedule.run_pending()
             time.sleep(1)
+
+    def get_uptime(self, granularity=3):
+        result = []
+        with open('/proc/uptime', 'r') as f:
+            uptime_seconds = float(f.readline().split()[0])
+        for name, count in intervals:
+            value = uptime_seconds // count
+            if value:
+                uptime_seconds -= value * count
+                if value == 1:
+                    name = name.rstrip('s')
+                result.append("{:.0f} {}".format(value, name))
+        return ', '.join(result[:granularity])
+
