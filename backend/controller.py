@@ -29,6 +29,9 @@ class GaragePiController:
         self.__relay_lock = threading.Lock()
 
         self.__db = GarageDb(app.instance_path, app.resource_path)
+        
+        # Setup Relay pin
+        GPIO.setup(app.config['RELAY_PIN'], GPIO.OUT)
 
         # Get initial reed state and subscribe to events
         GPIO.setup(app.config['REED_PIN'], GPIO.IN)
@@ -170,11 +173,11 @@ class GaragePiController:
                                'Door switch activated when in {0} state.'.format(self.get_status().status_text))
 
         with self.__relay_lock:
-            # Relay triggers on low so just setting as output will trigger
-            # and closing will switch back.
-            GPIO.setup(app.config['RELAY_PIN'], GPIO.OUT)
+            # Update for a relay that triggers on high
+            #
+            GPIO.output(app.config['RELAY_PIN'], True)
             time.sleep(0.5)
-            GPIO.setup(app.config['RELAY_PIN'], GPIO.IN)
+            GPIO.output(app.config['RELAY_PIN'], False)
 
     def check_door_open_for_warning(self):
         if self.__door_state and app.warning_event is not None:
