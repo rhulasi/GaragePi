@@ -120,6 +120,10 @@ fi
 echo -e "\Starting 'garagepi' service..."
 sudo service garagepi start
 
+# Create an empty webserver log in /var/log that can be written to
+sudo touch /var/log/garage_webserver.log
+sudo chown www-data:www-data garage_webserver.log
+
 # Always restart lighttpd, even if the fastcgi server wasn't installed
 echo -e "\nRestarting lighttpd to pick up changes..."
 sudo service lighttpd restart

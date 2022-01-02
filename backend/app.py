@@ -15,7 +15,7 @@ instance_path = os.path.dirname(os.path.realpath(os.path.abspath(sys.argv[0]))) 
 resource_path = os.path.dirname(os.path.realpath(os.path.abspath(sys.argv[0]))) + os.sep + 'resource'
 
 # Create logger
-file_handler = RotatingFileHandler(os.path.join(instance_path, 'garage_backend.log'),
+file_handler = RotatingFileHandler(os.path.join('/var/log', 'garage_backend.log'),
                                    constants.LOGFILE_MODE, constants.LOGFILE_MAXSIZE,
                                    constants.LOGFILE_BACKUP_COUNT)
 file_handler.setLevel(logging.DEBUG)

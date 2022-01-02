@@ -21,7 +21,7 @@ app = Flask(__name__, instance_relative_config=True)
 
 # Set up logging
 app.logger_name = "WEBSRVR"
-file_handler = RotatingFileHandler(os.path.join(app.instance_path, 'garage_webserver.log'),
+file_handler = RotatingFileHandler(os.path.join('/var/log', 'garage_webserver.log'),
                                    constants.LOGFILE_MODE, constants.LOGFILE_MAXSIZE,
                                    constants.LOGFILE_BACKUP_COUNT)
 file_handler.setLevel(logging.DEBUG)
